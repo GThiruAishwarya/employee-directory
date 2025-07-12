@@ -1,34 +1,62 @@
 // static/js/app.js
+
 let employees = [...mockEmployees];
 
-// Render employee list on dashboard
-function deleteEmployee(id) {
-  employees = employees.filter(e => e.id !== id);
-  renderEmployeeList(employees);
+function saveToStorage() {
   localStorage.setItem('employees', JSON.stringify(employees));
 }
 
-function loadEmployeesFromStorage() {
+function loadFromStorage() {
   const stored = localStorage.getItem('employees');
   if (stored) {
     employees = JSON.parse(stored);
   }
 }
 
+function deleteEmployee(id) {
+  employees = employees.filter(e => e.id !== id);
+  saveToStorage();
+  renderEmployeeList(employees);
+}
+
+function getEmployeeById(id) {
+  return employees.find(e => e.id === id);
+}
+
+function updateOrAddEmployee(employee) {
+  const index = employees.findIndex(e => e.id === employee.id);
+  if (index !== -1) {
+    employees[index] = employee;
+  } else {
+    employees.push(employee);
+  }
+  saveToStorage();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  loadEmployeesFromStorage();
+  loadFromStorage();
 
   const listContainer = document.getElementById('employee-list');
   if (listContainer) {
     renderEmployeeList(employees);
+
+    document.getElementById('search-input')?.addEventListener('input', e => {
+      const value = e.target.value.toLowerCase();
+      const filtered = employees.filter(emp =>
+        emp.firstName.toLowerCase().includes(value) ||
+        emp.lastName.toLowerCase().includes(value) ||
+        emp.email.toLowerCase().includes(value)
+      );
+      renderEmployeeList(filtered);
+    });
+
     listContainer.addEventListener('click', e => {
+      const id = parseInt(e.target.dataset.id);
       if (e.target.classList.contains('delete-btn')) {
-        const id = parseInt(e.target.dataset.id);
-        if (confirm('Are you sure you want to delete this employee?')) {
+        if (confirm('Are you sure?')) {
           deleteEmployee(id);
         }
       } else if (e.target.classList.contains('edit-btn')) {
-        const id = e.target.dataset.id;
         window.location.href = `form.ftlh?id=${id}`;
       }
     });
@@ -36,11 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const form = document.getElementById('employee-form');
   if (form) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const editId = parseInt(urlParams.get('id'));
+    const params = new URLSearchParams(window.location.search);
+    const editId = parseInt(params.get('id'));
 
     if (editId) {
-      const emp = employees.find(e => e.id === editId);
+      const emp = getEmployeeById(editId);
       if (emp) {
         document.getElementById('employee-id').value = emp.id;
         document.getElementById('firstName').value = emp.firstName;
@@ -51,29 +79,28 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', e => {
       e.preventDefault();
 
-      const idField = document.getElementById('employee-id');
-      const id = idField.value ? parseInt(idField.value) : Date.now();
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const email = document.getElementById('email').value;
-      const department = document.getElementById('department').value;
-      const role = document.getElementById('role').value;
+      const id = document.getElementById('employee-id').value
+        ? parseInt(document.getElementById('employee-id').value)
+        : Date.now();
 
-      const employeeData = { id, firstName, lastName, email, department, role };
+      const newEmp = {
+        id,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        department: document.getElementById('department').value,
+        role: document.getElementById('role').value
+      };
 
-      const existingIndex = employees.findIndex(e => e.id === id);
-      if (existingIndex !== -1) {
-        employees[existingIndex] = employeeData;
-        alert('Employee updated!');
-      } else {
-        employees.push(employeeData);
-        alert('Employee added!');
-      }
+      updateOrAddEmployee(newEmp);
+      alert(editId ? 'Employee updated!' : 'Employee added!');
+      window.location.href = 'index.ftlh';
+    });
 
-      localStorage.setItem('employees', JSON.stringify(employees));
+    document.getElementById('cancel-btn')?.addEventListener('click', () => {
       window.location.href = 'index.ftlh';
     });
   }

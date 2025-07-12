@@ -4,6 +4,12 @@ This is a responsive, dynamic Employee Directory web application built as part o
 
 ---
 
+## 🔗 Live Demo
+
+[Click to view deployed app on Vercel 🚀](https://employee-directory-psi.vercel.app/)
+
+---
+
 ## 🚀 Features
 
 - View a list of employees (cards)
@@ -22,22 +28,16 @@ This is a responsive, dynamic Employee Directory web application built as part o
 
 ```
 employee-directory/
-├── src/
-│   └── main/
-│       └── resources/
-│           ├── static/
-│           │   ├── css/
-│           │   │   └── style.css
-│           │   └── js/
-│           │       ├── app.js
-│           │       ├── data.js
-│           │       ├── ui.js
-│           │       └── utils.js
-│           └── templates/
-│               ├── index.ftlh
-│               └── form.ftlh
-├── mock-employees.json
-└── README.md
+├── css/
+│   └── style.css
+├── js/
+│   ├── app.js
+│   ├── data.js
+│   ├── ui.js
+│   └── utils.js
+├── index.html
+├── form.html
+├── README.md
 ```
 
 ---
@@ -55,16 +55,13 @@ If using Freemarker:
 
 ## 📸 Screenshots
 
-### 🖥️ Desktop
-![Dashboard Desktop](screenshots/dashboard-desktop.png)
+### 🖥️ Employee Directory (List View)
+[🔗 View Screenshot](https://drive.google.com/file/d/1lOjQThx2yAARHptpebiPEzKCHAL9yi28/view?usp=sharing)
 
-### 📱 Mobile
-![Dashboard Mobile](screenshots/dashboard-mobile.png)
+### 🧾 Add/Edit Employee Form
+[🔗 View Screenshot](https://drive.google.com/file/d/1Y1A3w4Q--fIDebiHyQJsU4QS8a5GAPFs/view?usp=sharing)
 
-### 🧾 Add/Edit Form
-![Form](screenshots/form.png)
-
-*(Screenshots are placeholders. Please add actual screen captures from your app.)*
+*(Screenshots are hosted on Google Drive. Click to view.)*
 
 ---
 
@@ -93,6 +90,3 @@ If using Freemarker:
 - [x] Validations handled
 - [x] README + Screenshots included
 
----
-
-Made with ❤️ for Ajackus Assignment

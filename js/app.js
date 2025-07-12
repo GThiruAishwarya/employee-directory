@@ -1,7 +1,5 @@
-// static/js/app.js - Full Regenerated Code with Sort & Filter
-
 let employees = [...mockEmployees];
-let currentSort = 'name';
+let currentSort = 'firstName'; // corrected default sort key
 let sortAsc = true;
 
 function saveToStorage() {
@@ -37,8 +35,8 @@ function updateOrAddEmployee(employee) {
 
 function sortEmployees(list, key, asc = true) {
   return [...list].sort((a, b) => {
-    const valA = a[key].toLowerCase();
-    const valB = b[key].toLowerCase();
+    const valA = (a[key] || '').toLowerCase();
+    const valB = (b[key] || '').toLowerCase();
     if (valA < valB) return asc ? -1 : 1;
     if (valA > valB) return asc ? 1 : -1;
     return 0;
@@ -55,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('search-input')?.addEventListener('input', e => {
       const value = e.target.value.toLowerCase();
       const filtered = employees.filter(emp =>
-        emp.firstName.toLowerCase().includes(value) ||
-        emp.lastName.toLowerCase().includes(value) ||
-        emp.email.toLowerCase().includes(value)
+        (emp.firstName || '').toLowerCase().includes(value) ||
+        (emp.lastName || '').toLowerCase().includes(value) ||
+        (emp.email || '').toLowerCase().includes(value)
       );
       renderEmployeeList(sortEmployees(filtered, currentSort, sortAsc));
     });
@@ -79,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
           deleteEmployee(id);
         }
       } else if (e.target.classList.contains('edit-btn')) {
-        window.location.href = `form.ftlh?id=${id}`;
+        window.location.href = `form.html?id=${id}`;
       }
     });
   }
@@ -119,11 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       updateOrAddEmployee(newEmp);
       alert(editId ? 'Employee updated!' : 'Employee added!');
-      window.location.href = 'index.ftlh';
+      window.location.href = 'index.html';
     });
 
     document.getElementById('cancel-btn')?.addEventListener('click', () => {
-      window.location.href = 'index.ftlh';
+      window.location.href = 'index.html';
     });
   }
 });

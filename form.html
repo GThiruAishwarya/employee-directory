@@ -1,36 +1,38 @@
+<!-- ✅ form.html (cleaned for static use) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Employee Form</title>
-<script src="/js/app.js"></script>
-<link rel="stylesheet" href="/css/style.css" />
+  <title>Add/Edit Employee</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="container">
-    <h2>${employee??"Edit Employee" : "Add Employee"}</h2>
+    <h2 id="form-title">Add/Edit Employee</h2>
     <form id="employee-form">
-      <input type="hidden" id="employee-id" value="${employee.id!}" />
+      <input type="hidden" id="employee-id" />
+
       <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" value="${employee.firstName!}" required />
+      <input type="text" id="firstName" required />
 
       <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" value="${employee.lastName!}" required />
+      <input type="text" id="lastName" required />
 
       <label for="email">Email:</label>
-      <input type="email" id="email" value="${employee.email!}" required />
+      <input type="email" id="email" required />
 
       <label for="department">Department:</label>
-      <input type="text" id="department" value="${employee.department!}" required />
+      <input type="text" id="department" required />
 
       <label for="role">Role:</label>
-      <input type="text" id="role" value="${employee.role!}" required />
+      <input type="text" id="role" required />
 
       <button type="submit">Save</button>
-      <button type="button" onclick="window.history.back()">Cancel</button>
+      <button type="button" id="cancel-btn">Cancel</button>
     </form>
   </div>
-  <script src="/static/js/app.js"></script>
+
+  <script src="js/app.js"></script>
 </body>
 </html>

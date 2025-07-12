@@ -1,6 +1,8 @@
-// static/js/app.js
+// static/js/app.js - Full Regenerated Code with Sort & Filter
 
 let employees = [...mockEmployees];
+let currentSort = 'name';
+let sortAsc = true;
 
 function saveToStorage() {
   localStorage.setItem('employees', JSON.stringify(employees));
@@ -33,12 +35,22 @@ function updateOrAddEmployee(employee) {
   saveToStorage();
 }
 
+function sortEmployees(list, key, asc = true) {
+  return [...list].sort((a, b) => {
+    const valA = a[key].toLowerCase();
+    const valB = b[key].toLowerCase();
+    if (valA < valB) return asc ? -1 : 1;
+    if (valA > valB) return asc ? 1 : -1;
+    return 0;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadFromStorage();
 
   const listContainer = document.getElementById('employee-list');
   if (listContainer) {
-    renderEmployeeList(employees);
+    renderEmployeeList(sortEmployees(employees, currentSort, sortAsc));
 
     document.getElementById('search-input')?.addEventListener('input', e => {
       const value = e.target.value.toLowerCase();
@@ -47,7 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
         emp.lastName.toLowerCase().includes(value) ||
         emp.email.toLowerCase().includes(value)
       );
-      renderEmployeeList(filtered);
+      renderEmployeeList(sortEmployees(filtered, currentSort, sortAsc));
+    });
+
+    document.getElementById('sort-select')?.addEventListener('change', e => {
+      currentSort = e.target.value;
+      renderEmployeeList(sortEmployees(employees, currentSort, sortAsc));
+    });
+
+    document.getElementById('sort-toggle')?.addEventListener('click', () => {
+      sortAsc = !sortAsc;
+      renderEmployeeList(sortEmployees(employees, currentSort, sortAsc));
     });
 
     listContainer.addEventListener('click', e => {
